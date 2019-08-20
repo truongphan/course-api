@@ -12,3 +12,8 @@ create table topic_entity (id  bigserial not null, description varchar(255), nam
 create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
 create table course-api.topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
 create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
+create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
+create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
+create table course (id  bigserial not null, description varchar(255), name varchar(255), topic_id int8, primary key (id))
+create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
+alter table course add constraint FKokaxyfpv8p583w8yspapfb2ar foreign key (topic_id) references topic

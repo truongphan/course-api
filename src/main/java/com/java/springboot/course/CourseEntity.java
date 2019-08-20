@@ -1,18 +1,14 @@
-package com.java.springboot.topic;
+package com.java.springboot.course;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.java.springboot.course.CourseEntity;
+import com.java.springboot.topic.TopicEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +22,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "topic")
-public class TopicEntity {
+@Table(name = "course")
+public class CourseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +36,6 @@ public class TopicEntity {
 	@Column(name = "description")
 	private String description;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topic" )
-	private Set<CourseEntity> courses;
-	
+	@ManyToOne
+	private TopicEntity topic;
 }
