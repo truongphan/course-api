@@ -45,10 +45,17 @@ public class CourseService {
 		courseRepository.deleteById(id);
 	}
 
-	public void updateCourse(Course course, Long id) throws NotFoundException {
-		if (getCourseById(id) == null) {
+	public void updateCourse(Long topicId, Course course, Long id) throws NotFoundException {
+		TopicEntity topicEntity = topicService.getTopicById(topicId);
+		if (topicEntity == null) {
+			throw new NotFoundException("Topic not found.");
+		}
+		CourseEntity courseEntity = getCourseById(id);
+		if (courseEntity == null) {
 			throw new NotFoundException("Course Not Found.");
 		}
-		courseRepository.save(CourseUtils.toCourseEntity(course));
+		courseEntity = CourseUtils.toCourseEntity(course);
+		courseEntity.setTopic(topicEntity);
+		courseRepository.save(courseEntity);
 	}
 }

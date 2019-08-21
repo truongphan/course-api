@@ -17,3 +17,9 @@ create table topic (id  bigserial not null, description varchar(255), name varch
 create table course (id  bigserial not null, description varchar(255), name varchar(255), topic_id int8, primary key (id))
 create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
 alter table course add constraint FKokaxyfpv8p583w8yspapfb2ar foreign key (topic_id) references topic
+create table course (id  bigserial not null, description varchar(255), name varchar(255), topic_id int8, primary key (id))
+create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
+alter table course add constraint FKokaxyfpv8p583w8yspapfb2ar foreign key (topic_id) references topic
+create table course (id  bigserial not null, description varchar(255), name varchar(255), topic_id int8, primary key (id))
+create table topic (id  bigserial not null, description varchar(255), name varchar(255), primary key (id))
+alter table course add constraint FKokaxyfpv8p583w8yspapfb2ar foreign key (topic_id) references topic

@@ -39,7 +39,7 @@ public class CourseController {
 	
 	@PutMapping("/topics/{topic-id}/courses/{course-id}")
 	public void updateCourse(@PathVariable("topic-id") Long topicId, @RequestBody Course course, @PathVariable("course-id") Long courseId) throws NotFoundException {
-		courseService.updateCourse(course, courseId);
+		courseService.updateCourse(topicId, course, courseId);
 	}
 	
 	@DeleteMapping("/courses/{course-id}")

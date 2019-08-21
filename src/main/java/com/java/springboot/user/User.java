@@ -1,8 +1,4 @@
-package com.java.springboot.topic;
-
-import java.util.List;
-
-import com.java.springboot.course.Course;
+package com.java.springboot.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Topic {
+public class User {
 	
 	private Long id;
-	private String name;
-	private String description;
-	private List<Course> courses;
+	private String username;
+	private String password;
 }
