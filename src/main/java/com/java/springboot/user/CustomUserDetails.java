@@ -1,4 +1,4 @@
-package com.java.springboot.security;
+package com.java.springboot.user;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -6,8 +6,6 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.java.springboot.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
