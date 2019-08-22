@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.java.springboot.utils.UserUtils;
 
-import me.loda.springsecurityhibernatejwt.user.User;
-
 @Service
 public class UserService implements UserDetailsService {
 
@@ -20,21 +18,20 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
+
 		UserEntity userEntity = userRepository.findByUsername(username);
-		if (userEntity == null ) {
+		if (userEntity == null) {
 			throw new UsernameNotFoundException(username);
 		}
 		return new CustomUserDetails(UserUtils.toUserModel(userEntity));
 	}
-	
-	// JWTAuthenticationFilter sẽ sử dụng hàm này
-    @Transactional
-    public UserDetails loadUserById(Long id) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("User not found with id : " + id)
-        );
 
-        return new CustomUserDetails(UserUtils.toUserModel(userEntity));
-    }
+	// JWTAuthenticationFilter sẽ sử dụng hàm này
+	@Transactional
+	public UserDetails loadUserById(Long id) {
+		UserEntity userEntity = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
+
+		return new CustomUserDetails(UserUtils.toUserModel(userEntity));
+	}
 }

@@ -12,7 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class User {
-	
+
+	public User(String username, String pass) {
+		this.username = username;
+		this.password = pass;
+	}
 	private Long id;
 	private String username;
 	private String password;
