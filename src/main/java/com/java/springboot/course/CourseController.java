@@ -18,7 +18,7 @@ import com.java.springboot.utils.CourseUtils;
 import javassist.NotFoundException;
 
 @RestController
-@RequestMapping("course-api/api")
+@RequestMapping("rest/api")
 public class CourseController {
 
 	@Autowired

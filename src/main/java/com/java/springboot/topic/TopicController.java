@@ -18,7 +18,7 @@ import com.java.springboot.utils.TopicUtils;
 import javassist.NotFoundException;
 
 @RestController
-@RequestMapping("course-api/api")
+@RequestMapping("rest/api")
 public class TopicController {
 
 	@Autowired

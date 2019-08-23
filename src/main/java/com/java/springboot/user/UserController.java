@@ -1,49 +1,65 @@
 package com.java.springboot.user;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.java.springboot.jwt.TokenAuthenticationService;
+import org.apache.commons.lang3.StringUtils;
 
 @RestController
-@RequestMapping("course-api/api")
+@RequestMapping("/rest")
 public class UserController {
 
-	@Autowired
-	AuthenticationManager authenticationManager;
 
-	@Autowired
-	private TokenAuthenticationService tokenProvider;
-
-	@PostMapping("/login")
-	public LoginResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-		// authentication user info from Request
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-		// if no exception, set authentication info into Security Context
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		// return jwt to user
-		String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-		return new LoginResponse(jwt);
-	}
-
-	// Api require authentication to request
-	@GetMapping("/random")
-	public RandomStuff randomStuff() {
-		return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
-	}
+	  public static List<User> listUser = new ArrayList<User>();
+	  static {
+	    User userKai = new User(1L, "kai", "123456");
+	    userKai.setRoles(new String[] { "ROLE_ADMIN" });
+	    User userSena = new User(2L, "sena", "123456");
+	    userSena.setRoles(new String[] { "ROLE_USER" });
+	    listUser.add(userKai);
+	    listUser.add(userSena);
+	  }
+	  public List<User> findAll() {
+	    return listUser;
+	  }
+	  public User findById(int id) {
+	    for (User user : listUser) {
+	      if (user.getId() == id) {
+	        return user;
+	      }
+	    }
+	    return null;
+	  }
+	  public boolean add(User user) {
+	    for (User userExist : listUser) {
+	      if (user.getId() == userExist.getId() || StringUtils.equals(user.getUsername(), userExist.getUsername())) {
+	        return false;
+	      }
+	    }
+	    listUser.add(user);
+	    return true;
+	  }
+	  public void delete(int id) {
+	    listUser.removeIf(user -> user.getId() == id);
+	  }
+	  public User loadUserByUsername(String username) {
+	    for (User user : listUser) {
+	      if (user.getUsername().equals(username)) {
+	        return user;
+	      }
+	    }
+	    return null;
+	  }
+	  public boolean checkLogin(User user) {
+	    for (User userExist : listUser) {
+	      if (StringUtils.equals(user.getUsername(), userExist.getUsername())
+	          && StringUtils.equals(user.getPassword(), userExist.getPassword())) {
+	        return true;
+	      }
+	    }
+	    return false;
+	  }
 
 }
