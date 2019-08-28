@@ -8,20 +8,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-
-	private static final long serialVersionUID = -2102832732117485237L;
-	private User user;
+	User user;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singleton(new SimpleGrantedAuthority("USER_ROLE"));
+		// Mặc định mình sẽ để tất cả là ROLE_USER. Để demo cho đơn giản.
+		return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override
@@ -53,5 +50,4 @@ public class CustomUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
 }

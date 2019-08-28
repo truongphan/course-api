@@ -1,66 +1,45 @@
 package com.java.springboot.user;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Copyright 2019 {@author Loda} (https://loda.me).
+ * This project is licensed under the MIT license.
+ *
+ * @since 4/30/2019
+ * Github: https://github.com/loda-kun
+ */
 @Service
-public class UserService {
-	public static List<User> listUser = new ArrayList<User>();
-	static {
-		User userKai = new User(1L, "kai", "123456");
-		userKai.setRoles(new String[] { "ROLE_ADMIN" });
-		User userSena = new User(2L, "sena", "123456");
-		userSena.setRoles(new String[] { "ROLE_USER" });
-		listUser.add(userKai);
-		listUser.add(userSena);
-	}
+public class UserService implements UserDetailsService {
 
-	public List<User> findAll() {
-		return listUser;
-	}
+    @Autowired
+    private UserRepository userRepository;
 
-	public User findById(Long id) {
-		for (User user : listUser) {
-			if (user.getId() == id) {
-				return user;
-			}
-		}
-		return null;
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        // Kiểm tra xem user có tồn tại trong database không?
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new CustomUserDetails(user);
+    }
 
-	public boolean add(User user) {
-		for (User userExist : listUser) {
-			if (user.getId() == userExist.getId() || StringUtils.equals(user.getUsername(), userExist.getUsername())) {
-				return false;
-			}
-		}
-		listUser.add(user);
-		return true;
-	}
+    // JWTAuthenticationFilter sẽ sử dụng hàm này
+    @Transactional
+    public UserDetails loadUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with id : " + id)
+        );
 
-	public void delete(int id) {
-		listUser.removeIf(user -> user.getId() == id);
-	}
+        return new CustomUserDetails(user);
+    }
 
-	public User loadUserByUsername(String username) {
-		for (User user : listUser) {
-			if (user.getUsername().equals(username)) {
-				return user;
-			}
-		}
-		return null;
-	}
 
-	public boolean checkLogin(User user) {
-		for (User userExist : listUser) {
-			if (StringUtils.equals(user.getUsername(), userExist.getUsername())
-					&& StringUtils.equals(user.getPassword(), userExist.getPassword())) {
-				return true;
-			}
-		}
-		return false;
-	}
 }
